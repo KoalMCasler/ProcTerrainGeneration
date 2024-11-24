@@ -7,8 +7,8 @@ public static class MeshGenerator
 	public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve curve, int levelOfDetail) 
 	{
 		AnimationCurve heightCurve = new AnimationCurve(curve.keys);
-		int width = heightMap.GetLength (0);
-		int height = heightMap.GetLength (1);
+		int width = heightMap.GetLength(0);
+		int height = heightMap.GetLength(1);
 		float topLeftX = (width - 1) / -2f;
 		float topLeftZ = (height - 1) / 2f;
 
@@ -49,25 +49,28 @@ public class MeshData
 
 	int triangleIndex;
 
-	public MeshData(int meshWidth, int meshHeight) {
+	public MeshData(int meshWidth, int meshHeight) 
+	{
 		vertices = new Vector3[meshWidth * meshHeight];
 		uvs = new Vector2[meshWidth * meshHeight];
 		triangles = new int[(meshWidth-1)*(meshHeight-1)*6];
 	}
 
-	public void AddTriangle(int a, int b, int c) {
+	public void AddTriangle(int a, int b, int c) 
+	{
 		triangles [triangleIndex] = a;
 		triangles [triangleIndex + 1] = b;
 		triangles [triangleIndex + 2] = c;
 		triangleIndex += 3;
 	}
 
-	public Mesh CreateMesh() {
-		Mesh mesh = new Mesh ();
+	public Mesh CreateMesh() 
+	{
+		Mesh mesh = new Mesh();
 		mesh.vertices = vertices;
 		mesh.triangles = triangles;
 		mesh.uv = uvs;
-		mesh.RecalculateNormals ();
+		mesh.RecalculateNormals();
 		mesh.name = "Terrain";
 		return mesh;
 	}
