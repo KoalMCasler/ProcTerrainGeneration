@@ -129,7 +129,7 @@ public class MapGenerator : MonoBehaviour
 			meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback,meshData));
 		}
 	}
-	private MapData GenerateMapData(Vector2 center)
+	public MapData GenerateMapData(Vector2 center)
 	{
 		float[,] noiseMap = Noise.GenerateNoiseMap (mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistence, lacunarity, center + offset,normalizeMode);
 
