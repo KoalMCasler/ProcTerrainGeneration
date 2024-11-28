@@ -6,9 +6,10 @@ using System.Collections.Generic;
 
 public class MapGenerator : MonoBehaviour 
 {
-
+	public enum SceneMode{Menu, Game};
 	public enum DrawMode {NoiseMap, ColorMap, Mesh};
 	public DrawMode drawMode;
+	public SceneMode sceneMode;
 	public Noise.NormalizeMode normalizeMode;
 	public const int mapChunkSize = 241; 
 	[Range(0,6)]
@@ -28,6 +29,7 @@ public class MapGenerator : MonoBehaviour
 
 	public bool useRandomSeed;
 	public bool autoUpdate;
+	public float mapSpeed;
 
 	public TerrainType[] regions;
 
@@ -36,7 +38,16 @@ public class MapGenerator : MonoBehaviour
 
 	void Start()
 	{
-		SetSeed();
+		if(sceneMode == SceneMode.Menu)
+		{
+			useRandomSeed = true;
+			DrawMapInEditor();
+		}
+		if(useRandomSeed)
+		{
+			SetSeed();
+		}
+
 	}
 
 	void Update()
@@ -56,6 +67,11 @@ public class MapGenerator : MonoBehaviour
 				MapThreadInfo<MeshData> threadInfo = meshDataThreadInfoQueue.Dequeue();
 				threadInfo.callback(threadInfo.parameter);
 			}
+		}
+		if(sceneMode == SceneMode.Menu)
+		{
+			offset.x -= Time.deltaTime*mapSpeed;
+			DrawMapInEditor();
 		}
 	}
 
@@ -145,6 +161,10 @@ public class MapGenerator : MonoBehaviour
 		if(useRandomSeed)
 		{
 			seed = UnityEngine.Random.Range(1,100000000);
+			if(sceneMode == SceneMode.Menu)
+			{
+				useRandomSeed = false;
+			}
 		}
 	}
 
